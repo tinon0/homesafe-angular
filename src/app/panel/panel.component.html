@@ -1,0 +1,42 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand">AlarmApp</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" routerLink="/panel">Panel</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" routerLink="/newMode">Nuevo Modo</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" routerLink="/**">Cerrar Sesion</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div>
+    <div class="container">
+        <h2> Desde este panel usted puede manejar su alarma: </h2>
+        <br>
+        <form [formGroup]="newStatus" (ngSubmit)="submit()">
+            <label class="form-label">Modo</label>
+            <select formControlName="modeId" class="form-select">
+                <option value="">Elija el modo...</option>
+                <!--@FOR-->
+                @for (mode of allModes; track $index) {
+                    <option [value]="mode.id">{{mode.name}}</option>
+                }
+            </select>
+
+            <button (click)="armar()" type="submit" class="btn btn-outline-success mt-5"> ARMAR</button>
+            <button (click)="desarmar()" type="submit" class="btn btn-outline-danger mt-5"> DESARMAR</button>
+        </form>
+    </div>
+</div>

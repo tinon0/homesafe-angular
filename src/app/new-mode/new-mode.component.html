@@ -1,0 +1,97 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand">AlarmApp</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" routerLink="/panel">Panel</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" routerLink="/newMode">Nuevo Modo</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" routerLink="/**">Cerrar Sesion</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div>
+    <div class="container">
+        <h2>Nuevo Modo</h2>
+        <br>
+
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-header">
+                    Informacion General
+                </div>
+                <div class="card-body">
+                    <label class="form-label"> Usuario </label>
+                        <input type="text" class="form-control" [(ngModel)]="userName" disabled>
+                        <br>
+                    <form [formGroup]="newMode" (ngSubmit)="submit()">
+                        
+                        <label class="form-label"> Nombre </label>
+                        <input formControlName="name" type="text" class="form-control"
+                        [ngClass]="{'is-invalid': this.newMode.get('name')?.invalid && (this.newMode.get('name')?.dirty || this.newMode.get('name')?.touched), 'is-valid' : this.newMode.get('name')?.valid}">
+                        @if (this.newMode.get('name')?.invalid && (this.newMode.get('name')?.dirty || this.newMode.get('name')?.touched)) {
+                            @if (this.newMode.get('name')?.hasError('required')) {
+                                <div class="text-danger"> Campo Obligatorio </div>
+                            }
+                            @if (this.newMode.get('name')?.hasError('minlength')) {
+                                <div class="text-danger"> Nombre debe tener minimo 5 caracteres </div>
+                            }
+                        }
+                        <br>
+                        <div class="row">
+                            <div class="col-4"></div>
+                            <div class="col-4"></div>
+                            <div class="col-4">
+                                <a (click)="addZone()" style="color: blue; "><u> + Nueva Zona</u></a>
+                            </div>
+                        </div>
+                        @if (zoneArray.length === 0) {
+                            <p> No hay zonas cargadas...</p>
+                        }
+                        <div class="row">
+                            <div formArrayName="zones">
+                                @for (z of zoneArray.controls; track $index) {
+                                    <div [formGroupName]="$index">
+                                        <p>Zona n# {{$index + 1}}</p>
+                                        <button type="button" class="btn btn-warning" (click)="removeZone($index)"> X</button>
+                                        <select class="form-select" style="max-width: 150px;" formControlName="name"
+                                        [ngClass]="{'is-invalid': z.get('name')?.invalid && (z.get('name')?.dirty || z.get('name')?.touched), 'is-valid' : z.get('name')?.valid}">
+                                            <!--@FOR-->
+                                            @for (zone of allZones; track $index) {
+                                                <option [value]="zone.name"> {{zone.name}} </option>
+                                            }
+                                        </select>
+                                        @if (z.get('name')?.invalid && (z.get('name')?.dirty || z.get('name')?.touched)) {
+                                            @if (z.get('name')?.hasError('required')) {
+                                                <div class="text-danger"> Campo Obligatorio </div>
+                                            }
+                                            @if (z.get('name')?.hasError('repitedZone')) {
+                                                <div class="text-danger"> Zona repetida </div>
+                                            }
+                                        }
+                                        
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-primary mt-5" [disabled]="newMode.invalid"> Guardar </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>

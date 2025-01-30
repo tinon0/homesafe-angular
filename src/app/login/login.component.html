@@ -1,0 +1,42 @@
+<div class="container">
+    <div class="row">
+        <div class="col-4"></div>
+        <div class="col-4">
+            <div class="card mt-5">
+                <div class="card-body">
+                    <form [formGroup]="login" (ngSubmit)="submit()">
+                        <label class="form-label">Usuario</label>
+                        <input formControlName="user" type="text" class="form-control"
+                        [ngClass]="{'is-invalid': this.login.get('user')?.invalid && (this.login.get('user')?.dirty || this.login.get('user')?.touched), 'is-valid' : this.login.get('user')?.valid}">
+                        @if (this.login.get('user')?.invalid && (this.login.get('user')?.dirty || this.login.get('user')?.touched)) {
+                            @if (this.login.get('user')?.hasError('required')) {
+                                <div class="text-danger"> Campo Obligatorio </div>
+                            }
+                            @if (this.login.get('user')?.hasError('incorrectDomain')) {
+                                <div class="text-danger"> Dominio incorrecto </div>
+                            }
+                        }
+                        <br>
+                        <label class="form-label">Clave</label>
+                        <input formControlName="password" type="password" class="form-control"
+                        [ngClass]="{'is-invalid': this.login.get('password')?.invalid && (this.login.get('password')?.dirty || this.login.get('password')?.touched), 'is-valid' : this.login.get('password')?.valid}">
+                        @if (this.login.get('password')?.invalid && (this.login.get('password')?.dirty || this.login.get('password')?.touched)) {
+                            @if (this.login.get('password')?.hasError('required')) {
+                                <div class="text-danger"> Campo Obligatorio </div>
+                            }
+                            @if (this.login.get('password')?.hasError('minlength')) {
+                                <div class="text-danger"> Contraseña menor a 10 caracteres </div>
+                            }
+                            @if (this.login.get('password')?.hasError('validationPass')) {
+                                <div class="text-danger"> Contraseña invalida </div>
+                            }
+                        }
+                        <br>
+                        <button style="max-width: 100px;" type="submit" class="btn btn-primary" [disabled]="login.invalid"> Ingresar </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-4"></div>
+    </div>
+</div>
